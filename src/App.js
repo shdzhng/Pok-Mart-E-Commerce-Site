@@ -10,6 +10,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
+
       <Router>
         <NavBar />
         <Switch>

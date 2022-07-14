@@ -16,14 +16,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 
 import logo from '../../constants/pokeball.svg';
 import { Icon } from '@mui/material';
 import { NavbarLink, NavbarMenuLink } from './styles';
+
 import LogInModal from './LogInModal';
+import SearchBar from './SearchBar';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -44,20 +43,24 @@ HideOnScroll.propTypes = {
 };
 
 export default function HideAppBar(props) {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchItems, setSearchItems] = useState([]);
+
   const handleClose = () => setOpen(false);
 
+  useEffect(() => {
+    console.log(searchItems);
+  }, [searchItems]);
+
   const handleLogOut = () => {
-    console.log('logging');
-    setLoggedIn(!loggedIn);
+    setLoggedIn(false);
   };
 
   const handleLoginModal = () => {
     setOpen(true);
-    // setLoggedIn(!loggedIn);
   };
 
   const pages = ['PokéBalls', 'Cures', 'Machines'];
@@ -183,10 +186,19 @@ export default function HideAppBar(props) {
                 ))}
               </Box>
 
+              <SearchBar
+                setSearchItems={setSearchItems}
+                searchItems={searchItems}
+              />
+
               {loggedIn ? (
                 <Box>
                   <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <IconButton
+                      size="large"
+                      sx={{ pl: '1em' }}
+                      onClick={handleOpenUserMenu}
+                    >
                       <PersonIcon sx={{ fill: '#f1faff' }} />
                     </IconButton>
                   </Tooltip>
@@ -212,6 +224,9 @@ export default function HideAppBar(props) {
                         key={setting.name}
                         to={setting.href}
                         style={{ textDecoration: 'none' }}
+                        onClick={() => {
+                          return setting.action ? setting.action() : null;
+                        }}
                       >
                         <MenuItem
                           sx={{ justifyContent: 'center' }}
@@ -230,7 +245,8 @@ export default function HideAppBar(props) {
                   onClick={() => {
                     handleLoginModal();
                   }}
-                  sx={{ p: 2 }}
+                  size="large"
+                  sx={{ pl: '1em' }}
                 >
                   <PersonOutlineIcon sx={{ fill: '#f1faff' }} />
                 </IconButton>
@@ -240,7 +256,11 @@ export default function HideAppBar(props) {
         </AppBar>
       </HideOnScroll>
 
-      <LogInModal open={open} handleClose={handleClose} />
+      <LogInModal
+        open={open}
+        setLoggedIn={setLoggedIn}
+        handleClose={handleClose}
+      />
     </React.Fragment>
   );
 }
