@@ -11,15 +11,19 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+
 import logo from '../../constants/pokeball.svg';
 import { Icon } from '@mui/material';
 import { NavbarLink, NavbarMenuLink } from './styles';
+import LogInModal from './LogInModal';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -42,17 +46,18 @@ HideOnScroll.propTypes = {
 export default function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
 
   const handleLogOut = () => {
     console.log('logging');
     setLoggedIn(!loggedIn);
   };
 
-  const handleLogIn = () => {
-    console.log('logging in');
-    setLoggedIn(!loggedIn);
+  const handleLoginModal = () => {
+    setOpen(true);
+    // setLoggedIn(!loggedIn);
   };
 
   const pages = ['PokéBalls', 'Cures', 'Machines'];
@@ -223,7 +228,7 @@ export default function HideAppBar(props) {
               ) : (
                 <IconButton
                   onClick={() => {
-                    handleLogIn();
+                    handleLoginModal();
                   }}
                   sx={{ p: 2 }}
                 >
@@ -234,7 +239,8 @@ export default function HideAppBar(props) {
           </Container>
         </AppBar>
       </HideOnScroll>
-      <Toolbar />
+
+      <LogInModal open={open} handleClose={handleClose} />
     </React.Fragment>
   );
 }
