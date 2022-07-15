@@ -23,9 +23,11 @@ import { NavbarLink, NavbarMenuLink } from './styles';
 
 import LogInModal from './LogInModal';
 import SearchBar from './SearchBar';
+import { useAuth } from '../../contexts/AuthContext';
 
 function HideOnScroll(props) {
   const { children, window } = props;
+
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
   });
@@ -47,15 +49,8 @@ export default function HideAppBar(props) {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [searchItems, setSearchItems] = useState([]);
-  const [user, setUser] = useState(null);
+  const { currentUser, logout } = useAuth();
   const handleClose = () => setOpen(false);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  const handleLogOut = async () => {};
-
   const handleLoginModal = () => {
     setOpen(true);
   };
@@ -69,7 +64,7 @@ export default function HideAppBar(props) {
     {
       name: 'Logout',
       action: () => {
-        handleLogOut();
+        logout();
       },
       href: '/',
     },
@@ -188,7 +183,7 @@ export default function HideAppBar(props) {
                 searchItems={searchItems}
               />
 
-              {user ? (
+              {currentUser ? (
                 <Box>
                   <Tooltip title="Open settings">
                     <IconButton
@@ -255,12 +250,7 @@ export default function HideAppBar(props) {
         </AppBar>
       </HideOnScroll>
 
-      <LogInModal
-        open={open}
-        setUser={setUser}
-        user={user}
-        handleClose={handleClose}
-      />
+      <LogInModal open={open} handleClose={handleClose} />
     </React.Fragment>
   );
 }

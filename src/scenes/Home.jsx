@@ -1,5 +1,4 @@
 import React from 'react';
-import NavBar from '../features/NavBar';
 
 function Home() {
   return (

@@ -13,15 +13,17 @@ import {
 import { colors } from '../../constants/colors';
 import { ThemeProvider } from '@mui/material';
 import { modalTheme } from './styles';
-import { auth } from '../../firebase';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
 import { boxStyle, logoBoxStyle } from './styles';
 import pokeballLogo from '../../constants/pokeball-blue.svg';
 
-function LogInModal({ open, handleClose, setUser, user }) {
+import { useAuth } from '../../contexts/AuthContext';
+
+const DEFAULT_ERROR = {
+  type: null,
+  mesasge: null,
+};
+
+function LogInModal({ open, handleClose }) {
   const [userInfo, setUserInfo] = useState({
     email: '',
     firstName: '',
@@ -30,24 +32,29 @@ function LogInModal({ open, handleClose, setUser, user }) {
     passwordConfirmation: '',
   });
   const [mode, setMode] = useState('signin');
-  const [error, setError] = useState({
-    type: null,
-    mesasge: null,
-  });
+  const [error, setError] = useState(DEFAULT_ERROR);
+  const [loading, setLoading] = useState(false);
+  const {
+    currentUser,
+    login,
+    signup,
+    logout,
+    resetPassword,
+    updateEmail,
+    updatePassword,
+  } = useAuth();
 
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       handleClose();
     }
-  }, [user]);
+  }, [currentUser]);
 
-  const handleRegister = useCallback(() => {
+  const handleRegister = async () => {
     const { email, password, passwordConfirmation, firstName, lastName } =
       userInfo;
-    setError({
-      type: null,
-      mesasge: null,
-    });
+    setError(DEFAULT_ERROR);
+
     if (password.length < 6) {
       setError({
         type: 'password',
@@ -61,50 +68,47 @@ function LogInModal({ open, handleClose, setUser, user }) {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-      })
-      .catch((err) => {
-        if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
-          setError({ type: 'email', message: 'email already in use' });
-          return;
-        }
-      });
-  }, [user]);
+    try {
+      setLoading(true);
+      await signup(email, password);
+    } catch (error) {
+      if (error.message.includes('already in use')) {
+        setError({ type: 'email', message: 'Email already in use' });
+      }
+      setLoading(false);
+      return;
+    }
+  };
 
   const handleReset = () => {
-    console.log('Reset');
-    console.log(userInfo);
+    resetPassword(userInfo.email);
     handleClose();
   };
 
-  const handleLogIn = useCallback(() => {
+  const handleLogIn = async () => {
     const { email, password } = userInfo;
-    setError({
-      type: null,
-      mesasge: null,
-    });
+    setError(DEFAULT_ERROR);
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        if (errorMessage === 'Firebase: Error (auth/user-not-found).') {
-          setError({ type: 'email', message: 'user not found' });
-          return;
-        }
-        if (errorMessage === 'Firebase: Error (auth/wrong-password).') {
-          setError({ type: 'password', message: 'wrong password' });
-        }
-        if (errorMessage.includes('too-many-request')) {
-          console.log('oh no');
-        }
+    try {
+      await login(email, password);
+    } catch ({ message }) {
+      if (
+        message.includes(
+          ' There is no user record corresponding to this identifier.'
+        )
+      ) {
+        setError({ type: 'email', message: 'user not found' });
         return;
-      });
-  }, [userInfo]);
+      }
+      if (message === 'Firebase: Error (auth/wrong-password).') {
+        setError({ type: 'password', message: 'wrong password' });
+      }
+      if (message.includes('too-many-request')) {
+        console.log('too many requests');
+      }
+      return;
+    }
+  };
 
   return (
     <ThemeProvider theme={modalTheme}>
@@ -119,7 +123,7 @@ function LogInModal({ open, handleClose, setUser, user }) {
       >
         <Fade in={open}>
           <Box sx={boxStyle}>
-            {/* <Box sx={logoBoxStyle}>
+            <Box sx={logoBoxStyle}>
               <Icon
                 sx={{
                   display: 'inline-block',
@@ -149,7 +153,7 @@ function LogInModal({ open, handleClose, setUser, user }) {
               >
                 PokéMart
               </Typography>
-            </Box> */}
+            </Box>
 
             <FormControl>
               {mode === 'register' ? (
