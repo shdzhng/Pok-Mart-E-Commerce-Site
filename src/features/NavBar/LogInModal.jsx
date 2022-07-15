@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -36,10 +36,12 @@ function LogInModal({ open, handleClose, setUser, user }) {
   });
 
   useEffect(() => {
-    console.log(user);
+    if (user) {
+      handleClose();
+    }
   }, [user]);
 
-  const handleRegister = () => {
+  const handleRegister = useCallback(() => {
     const { email, password, passwordConfirmation, firstName, lastName } =
       userInfo;
     setError({
@@ -69,11 +71,7 @@ function LogInModal({ open, handleClose, setUser, user }) {
           return;
         }
       });
-
-    if (user) {
-      handleClose();
-    }
-  };
+  }, [user]);
 
   const handleReset = () => {
     console.log('Reset');
@@ -81,7 +79,7 @@ function LogInModal({ open, handleClose, setUser, user }) {
     handleClose();
   };
 
-  const handleLogIn = () => {
+  const handleLogIn = useCallback(() => {
     const { email, password } = userInfo;
     setError({
       type: null,
@@ -106,11 +104,7 @@ function LogInModal({ open, handleClose, setUser, user }) {
         }
         return;
       });
-
-    if (user) {
-      handleClose();
-    }
-  };
+  }, [userInfo]);
 
   return (
     <ThemeProvider theme={modalTheme}>

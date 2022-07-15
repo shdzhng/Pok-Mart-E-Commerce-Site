@@ -45,19 +45,16 @@ HideOnScroll.propTypes = {
 export default function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchItems, setSearchItems] = useState([]);
   const [user, setUser] = useState(null);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log(searchItems);
-  }, [searchItems]);
+    console.log(user);
+  }, [user]);
 
-  const handleLogOut = () => {
-    setLoggedIn(false);
-  };
+  const handleLogOut = async () => {};
 
   const handleLoginModal = () => {
     setOpen(true);
