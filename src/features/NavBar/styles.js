@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { colors } from '../../constants/colors';
 import { TextField, Button } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { createBreakpoints } from '@mui/system';
+const breakpoints = createBreakpoints({});
 
 const NavbarLink = styled(Link)`
   color: ${colors.white};
@@ -38,14 +40,41 @@ const searchTheme = createTheme({
   },
 });
 
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: { xs: 200, sm: 500 },
+  display: 'flex',
+  bgcolor: colors.white,
+  border: `2px solid ${colors.pink}`,
+  boxShadow: 24,
+  flexDirection: 'column',
+  p: 4,
+};
+
+const logoBoxStyle = { display: 'flex', justifyContent: 'center', mb: 2 };
+
 const modalTheme = createTheme({
   components: {
     MuiInputLabel: {
       styleOverrides: {
+        asterisk: {
+          '&.Mui-error': {
+            color: colors.blue3,
+          },
+        },
         root: {
-          color: colors.white,
+          color: colors.blue3,
           '&.Mui-focused': {
-            color: colors.white,
+            color: colors.blue3,
+          },
+          '&.Mui-error': {
+            color: colors.blue3,
+          },
+          [breakpoints.down('sm')]: {
+            fontSize: '0.75em',
           },
         },
       },
@@ -54,26 +83,32 @@ const modalTheme = createTheme({
       styleOverrides: {
         root: {
           width: '100%',
+          [breakpoints.down('sm')]: {
+            fontSize: '0.75em',
+          },
         },
         input: {
           paddingLeft: '0.25em',
-          color: colors.white,
+          color: 'black',
           fontWeight: 700,
           borderRadius: 5,
           '&:focus-visible': {
-            backgroundColor: `${colors.white}80`,
+            backgroundColor: `${colors.blue2}20`,
           },
           '&:-webkit-autofill': {
-            WebkitTextFillColor: colors.blue3,
-            WebkitBoxShadow: `0 0 0 1000px ${colors.white}00 inset`,
+            WebkitTextFillColor: `black`,
+            WebkitBoxShadow: `0 0 0 1000px ${colors.blue2}20 inset`,
           },
         },
         underline: {
           '&:before': {
-            borderBottom: `2px solid ${colors.white}`,
+            borderBottom: `2px solid ${colors.blue3}`,
           },
           '&:after': {
-            borderBottom: `2px solid ${colors.blue2}`,
+            borderBottom: `2px solid ${colors.blue4}`,
+          },
+          '&.Mui-error': {
+            borderBottom: `2px solid ${colors.white}`,
           },
         },
       },
@@ -82,17 +117,27 @@ const modalTheme = createTheme({
       styleOverrides: {
         marginNormal: false,
         root: {
-          fontSize: '1rem',
+          fontSize: '1em',
           marginTop: '1em',
           padding: '0.2em 0 0.2em 0 ',
           fontWeight: '900',
           color: colors.white,
           backgroundColor: colors.blue2,
           '&:hover': { backgroundColor: colors.blue3 },
+          [breakpoints.down('sm')]: {
+            fontSize: '0.75em',
+          },
         },
       },
     },
   },
 });
 
-export { NavbarMenuLink, modalTheme, searchTheme, NavbarLink };
+export {
+  NavbarMenuLink,
+  logoBoxStyle,
+  boxStyle,
+  modalTheme,
+  searchTheme,
+  NavbarLink,
+};

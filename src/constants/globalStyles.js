@@ -12,6 +12,8 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+
+
   p{
     margin:0
   }
