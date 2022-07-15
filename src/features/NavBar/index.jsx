@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-import logo from '../../constants/pokeball.svg';
+import logo from '../../constants/pokeball-white.svg';
 import { Icon } from '@mui/material';
 import { NavbarLink, NavbarMenuLink } from './styles';
 
@@ -45,19 +45,16 @@ HideOnScroll.propTypes = {
 export default function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchItems, setSearchItems] = useState([]);
-
+  const [user, setUser] = useState(null);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log(searchItems);
-  }, [searchItems]);
+    console.log(user);
+  }, [user]);
 
-  const handleLogOut = () => {
-    setLoggedIn(false);
-  };
+  const handleLogOut = async () => {};
 
   const handleLoginModal = () => {
     setOpen(true);
@@ -82,7 +79,7 @@ export default function HideAppBar(props) {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.target);
   };
 
   const handleCloseNavMenu = () => {
@@ -191,13 +188,15 @@ export default function HideAppBar(props) {
                 searchItems={searchItems}
               />
 
-              {loggedIn ? (
+              {user ? (
                 <Box>
                   <Tooltip title="Open settings">
                     <IconButton
                       size="large"
-                      sx={{ pl: '1em' }}
-                      onClick={handleOpenUserMenu}
+                      sx={{ p: '0.5em' }}
+                      onClick={(e) => {
+                        handleOpenUserMenu(e);
+                      }}
                     >
                       <PersonIcon sx={{ fill: '#f1faff' }} />
                     </IconButton>
@@ -230,8 +229,8 @@ export default function HideAppBar(props) {
                       >
                         <MenuItem
                           sx={{ justifyContent: 'center' }}
-                          onClick={() => {
-                            handleCloseUserMenu();
+                          onClick={(e) => {
+                            handleCloseUserMenu(e);
                           }}
                         >
                           <Typography>{setting.name}</Typography>
@@ -246,7 +245,7 @@ export default function HideAppBar(props) {
                     handleLoginModal();
                   }}
                   size="large"
-                  sx={{ pl: '1em' }}
+                  sx={{ p: '0.5em' }}
                 >
                   <PersonOutlineIcon sx={{ fill: '#f1faff' }} />
                 </IconButton>
@@ -258,7 +257,8 @@ export default function HideAppBar(props) {
 
       <LogInModal
         open={open}
-        setLoggedIn={setLoggedIn}
+        setUser={setUser}
+        user={user}
         handleClose={handleClose}
       />
     </React.Fragment>
