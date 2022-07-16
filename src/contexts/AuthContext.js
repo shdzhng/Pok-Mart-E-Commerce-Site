@@ -11,9 +11,9 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
+  // useEffect(() => {
+  //   console.log(currentUser);
+  // }, [currentUser]);
 
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);

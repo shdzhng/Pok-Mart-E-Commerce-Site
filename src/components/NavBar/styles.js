@@ -28,7 +28,8 @@ const searchTheme = createTheme({
           border: `2px solid ${colors.white}`,
           paddingLeft: '1em',
           borderRadius: '10px',
-          width: '40%',
+          marginLeft: 0,
+          width: '25%',
           backgroundColor: `${colors.red}`,
         },
         input: {
@@ -55,6 +56,68 @@ const boxStyle = {
 };
 
 const logoBoxStyle = { display: 'flex', justifyContent: 'center', mb: 2 };
+
+const navbarTheme = createTheme({
+  components: {
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: `${colors.green1}70`,
+          marginTop: '0.5em',
+          marginBottom: '0.5em',
+        },
+      },
+    },
+    MuiTypography: {
+      variants: [
+        {
+          props: {
+            variant: 'title',
+          },
+          style: {
+            fontSize: '1.1em',
+            color: colors.green2,
+            fontWeight: 600,
+            textAlign: 'center',
+            flexGrow: 1,
+          },
+        },
+      ],
+    },
+    MuiMenu: {
+      styleOverrides: {
+        root: {
+          marginTop: '14px',
+          zIndex: '1',
+          height: '75vh',
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '0.85em',
+          paddingTop: '0.2em',
+          paddingRight: '1em',
+          fontWeight: 350,
+          '&:hover': {
+            color: colors.white,
+            fontWeight: 450,
+            backgroundColor: `${colors.red}90`,
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: `${colors.white}`,
+          display: 'block',
+        },
+      },
+    },
+  },
+});
 
 const modalTheme = createTheme({
   components: {
@@ -139,5 +202,6 @@ export {
   boxStyle,
   modalTheme,
   searchTheme,
+  navbarTheme,
   NavbarLink,
 };
