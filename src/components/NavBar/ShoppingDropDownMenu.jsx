@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import {
   Menu,
-  MenuIcon,
   Box,
   Typography,
   Button,
   MenuItem,
-  Container,
   Divider,
-  Popper,
 } from '@mui/material';
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
 import { categories } from '../../constants/categories';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { useSelector, useDispatch } from 'react-redux';
+import { lookup } from '../search/searchSlice';
 
 function ShoppingDropDownMenu() {
+  const dispatch = useDispatch();
+  const { search } = useSelector((state) => state.search);
+
  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
- const [whatsNewAnchorEl, setWhatsNewAnchorEl] = React.useState(null);
  const openCategoryMenu = Boolean(categoryAnchorEl);
- const openWhatsNewMenu = Boolean(whatsNewAnchorEl);
+
+ useEffect(() => {
+   console.log(search);
+ }, [search]);
 
  const handleCategoryMenu = (command, event) => {
-   if (command === 'open') {
-    console.log(event)
-     setCategoryAnchorEl(event.currentTarget);
-   } else {
-     setCategoryAnchorEl(null);
+   if (command === 'open') setCategoryAnchorEl(event.currentTarget);
+   if (command === 'close') setCategoryAnchorEl(null);
+   if (command === 'select') {
+    setCategoryAnchorEl(null);
+      dispatch(lookup(event.target.textContent));
    }
- };
-
-const handleCategorySelection = (command, event) => {
-  handleCategoryMenu(command);
-};
+   }
 
  const handleWhatsNew = () =>{
   console.log('whats new?')
@@ -50,7 +50,7 @@ const handleCategorySelection = (command, event) => {
         </Button>
 
         <Menu
-          getContentAnchorEl={null}
+          getcontentanchorel={null}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           anchorEl={categoryAnchorEl}
@@ -77,15 +77,17 @@ const handleCategorySelection = (command, event) => {
               <MenuItem
                 key={category}
                 onClick={(e) => {
-                  handleCategorySelection('close', e);
+                  handleCategoryMenu('select', e);
                 }}
               >
                 {formatName}
-                <KeyboardArrowRightIcon sx={{fontSize: '1.1em'}}/>
+                <KeyboardArrowRightIcon sx={{ fontSize: '1.1em' }} />
               </MenuItem>
             );
           })}
+
         </Menu>
+
         <Button onClick={handleWhatsNew}>What's New</Button>
       </Box>
     </ThemeProvider>
