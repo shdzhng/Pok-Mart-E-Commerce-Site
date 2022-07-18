@@ -1,8 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import searchReducer from '../components/search/searchSlice';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import itemSliceReducer from '../components/items/itemSlice';
+import usersReducer from '../components/items/userSlice';
 
 export const store = configureStore({
   reducer: {
-    search: searchReducer,
+    items: itemSliceReducer,
+    users: usersReducer,
   },
 });

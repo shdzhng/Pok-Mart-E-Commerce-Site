@@ -24,7 +24,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../constants/colors';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-
 function AccountDropDownMenu({handleLoginModal}) {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser, logout } = useAuth();

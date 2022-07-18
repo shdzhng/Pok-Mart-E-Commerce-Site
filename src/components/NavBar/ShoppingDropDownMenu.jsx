@@ -7,30 +7,34 @@ import {
   MenuItem,
   Divider,
 } from '@mui/material';
+import { colors } from '../../constants/colors';
+import { Link } from "react-router-dom";
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
 import { categories } from '../../constants/categories';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
-import { lookup } from '../search/searchSlice';
+import { fetchItemsByCategory } from '../items/itemSlice';
+import { selectAllResults } from '../items/itemSlice';
+
 
 function ShoppingDropDownMenu() {
   const dispatch = useDispatch();
-  const { search } = useSelector((state) => state.search);
-
+  const { results, status } = useSelector((state) => state.items);
+const state = useSelector((state) => state.items);
  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
  const openCategoryMenu = Boolean(categoryAnchorEl);
 
  useEffect(() => {
-   console.log(search);
- }, [search]);
+   console.log(state);
+ }, [results, status]);
 
  const handleCategoryMenu = (command, event) => {
    if (command === 'open') setCategoryAnchorEl(event.currentTarget);
    if (command === 'close') setCategoryAnchorEl(null);
    if (command === 'select') {
     setCategoryAnchorEl(null);
-      dispatch(lookup(event.target.textContent));
+    dispatch(fetchItemsByCategory(event.target.textContent));
    }
    }
 
@@ -74,15 +78,16 @@ function ShoppingDropDownMenu() {
               .join(' ');
 
             return (
-              <MenuItem
-                key={category}
-                onClick={(e) => {
-                  handleCategoryMenu('select', e);
-                }}
-              >
-                {formatName}
-                <KeyboardArrowRightIcon sx={{ fontSize: '1.1em' }} />
-              </MenuItem>
+              <Link key={category} to="/catalogue" style={{textDecoration:'none', color:`${colors.blue3}`}}>
+                <MenuItem
+                  onClick={(e) => {
+                    handleCategoryMenu('select', e);
+                  }}
+                >
+                  {formatName}
+                  <KeyboardArrowRightIcon sx={{ fontSize: '1.1em' }} />
+                </MenuItem>
+              </Link>
             );
           })}
 

@@ -1,9 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import NavBar from '../components/NavBar';
 
 function Home() {
   return (
     <>
-      <p>home</p>
+      <p>Home</p>
     </>
   );
 }

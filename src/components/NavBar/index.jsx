@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Slide,
@@ -16,6 +16,7 @@ import {
   Button,
   Icon,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 //firebase
 import { useAuth } from '../../contexts/AuthContext';
@@ -57,7 +58,7 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-export default function HideAppBar(props) {
+function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const [openLogIn, setOpenLogIn] = useState(false);
@@ -88,20 +89,6 @@ export default function HideAppBar(props) {
   };
 
   const pages = [{ name: 'Categories', action: (e)=>{handleOpenCategoryMenu(e)} }, { name: "What's New",action:null }];
-
-  // const settings = [
-  //   { name: 'Home', action: null, href: '/' },
-  //   { name: 'Orders', action: null, href: '/dashboard' },
-  //   { name: 'Account', action: null, href: '/dashboard' },
-  //   { name: 'Dashboard', action: null, href: '/dashboard' },
-  //   {
-  //     name: 'Logout',
-  //     action: () => {
-  //       logout();
-  //     },
-  //     href: '/',
-  //   },
-  // ];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -219,3 +206,4 @@ export default function HideAppBar(props) {
     </React.Fragment>
   );
 }
+export default memo(HideAppBar);
