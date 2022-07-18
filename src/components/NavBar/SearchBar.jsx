@@ -8,7 +8,6 @@ function SearchBar({ setSearchItems, searchItems }) {
   return (
     <ThemeProvider theme={searchTheme}>
       <Autocomplete
-        id="tags-standard"
         size="small"
         clearText="true"
         options={top100Films}

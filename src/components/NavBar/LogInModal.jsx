@@ -15,7 +15,6 @@ import { ThemeProvider } from '@mui/material';
 import { modalTheme } from './styles';
 import { boxStyle, logoBoxStyle } from './styles';
 import pokeballLogo from '../../constants/pokeball-blue.svg';
-
 import { useAuth } from '../../contexts/AuthContext';
 
 const DEFAULT_ERROR = {

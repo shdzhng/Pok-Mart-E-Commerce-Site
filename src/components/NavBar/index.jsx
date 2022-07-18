@@ -1,29 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import CssBaseline from '@mui/material/CssBaseline';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import PersonIcon from '@mui/icons-material/Person';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import {
+  Slide,
+  CssBaseline,
+  useScrollTrigger,
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  MenuItem,
+  Tooltip,
+  Menu,
+  Container,
+  IconButton,
+  Button,
+  Icon,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 
-import logo from '../../constants/pokeball-white.svg';
-import { Icon } from '@mui/material';
-import { NavbarLink, NavbarMenuLink } from './styles';
-
-import LogInModal from './LogInModal';
-import SearchBar from './SearchBar';
+//firebase
 import { useAuth } from '../../contexts/AuthContext';
+
+//styling
+import logo from '../../constants/pokeball-white.svg';
+import { NavbarLink, NavbarMenuLink } from './styles';
+import { colors } from '../../constants/colors';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+//components
+import SearchBar from './SearchBar';
+import LogInModal from './LogInModal';
+import AccountDropDownMenu from './AccountDropDownMenu';
+import ShoppingDropDownMenu from './ShoppingDropDownMenu';
+
+//etc
+import { categories } from '../../constants/categories';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -44,46 +58,48 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-export default function HideAppBar(props) {
+function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [open, setOpen] = useState(false);
+
+  const [openLogIn, setOpenLogIn] = useState(false);
+
   const [searchItems, setSearchItems] = useState([]);
   const { currentUser, logout } = useAuth();
-  const handleClose = () => setOpen(false);
+
+  ///
+ const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+ const openCategoryMenu = Boolean(categoryAnchorEl);
+
+ const handleOpenCategoryMenu = (event, command) => {
+   setCategoryAnchorEl(event.currentTarget);
+ };
+
+ const handleCloseCategoryMenu = (event, command) => {
+   setCategoryAnchorEl(null)
+ };
+
+ const handleShoppingCart  = () =>{
+  console.log('shopping cart clicked')
+ }
+
+  const handleClose = () => setOpenLogIn(false);
+
   const handleLoginModal = () => {
-    setOpen(true);
+    setOpenLogIn(true);
   };
 
-  const pages = ['PokéBalls', 'Cures', 'Machines'];
-  const settings = [
-    { name: 'Home', action: null, href: '/' },
-    { name: 'Orders', action: null, href: '/dashboard' },
-    { name: 'Account', action: null, href: '/dashboard' },
-    { name: 'Dashboard', action: null, href: '/dashboard' },
-    {
-      name: 'Logout',
-      action: () => {
-        logout();
-      },
-      href: '/',
-    },
-  ];
+  const pages = [{ name: 'Categories', action: (e)=>{handleOpenCategoryMenu(e)} }, { name: "What's New",action:null }];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.target);
-  };
+
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+
 
   return (
     <React.Fragment>
@@ -126,8 +142,8 @@ export default function HideAppBar(props) {
                   }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography>{`${page} + hello`}</Typography>
+                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                      <Typography>{`${page.name}`}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -166,91 +182,28 @@ export default function HideAppBar(props) {
                 </NavbarLink>
               </Box>
 
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
-                {pages.map((page) => (
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page}
-                  </Button>
-                ))}
-              </Box>
+              <ShoppingDropDownMenu />
 
               <SearchBar
                 setSearchItems={setSearchItems}
                 searchItems={searchItems}
               />
+              <AccountDropDownMenu handleLoginModal={handleLoginModal} />
 
-              {currentUser ? (
-                <Box>
-                  <Tooltip title="Open settings">
-                    <IconButton
-                      size="large"
-                      sx={{ p: '0.5em' }}
-                      onClick={(e) => {
-                        handleOpenUserMenu(e);
-                      }}
-                    >
-                      <PersonIcon sx={{ fill: '#f1faff' }} />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    keepMounted
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'center',
-                      horizontal: 'left',
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                  >
-                    {settings.map((setting) => (
-                      <NavbarMenuLink
-                        key={setting.name}
-                        to={setting.href}
-                        style={{ textDecoration: 'none' }}
-                        onClick={() => {
-                          return setting.action ? setting.action() : null;
-                        }}
-                      >
-                        <MenuItem
-                          sx={{ justifyContent: 'center' }}
-                          onClick={(e) => {
-                            handleCloseUserMenu(e);
-                          }}
-                        >
-                          <Typography>{setting.name}</Typography>
-                        </MenuItem>
-                      </NavbarMenuLink>
-                    ))}
-                  </Menu>
-                </Box>
-              ) : (
-                <IconButton
-                  onClick={() => {
-                    handleLoginModal();
-                  }}
-                  size="large"
-                  sx={{ p: '0.5em' }}
-                >
-                  <PersonOutlineIcon sx={{ fill: '#f1faff' }} />
-                </IconButton>
-              )}
+              <IconButton
+                onClick={handleShoppingCart}
+                size="large"
+                sx={{ p: '0.2em' }}
+              >
+                <ShoppingCartIcon sx={{ fill: `${colors.white}` }} />
+              </IconButton>
             </Toolbar>
           </Container>
         </AppBar>
       </HideOnScroll>
 
-      <LogInModal open={open} handleClose={handleClose} />
+      <LogInModal open={openLogIn} handleClose={handleClose} />
     </React.Fragment>
   );
 }
+export default memo(HideAppBar);
