@@ -9,11 +9,14 @@ export default function CatalogueGrid() {
 
   console.log(items)
 
+
   return (
-    <>
-        {items.map((item) => {
-          <Typography>item.name</Typography>;
-        })}
-    </>
+    <Box sx={{ mt: '9vh' }}>
+      {items.length > 0 ? (
+        items.map((item) => <Typography>{item.name}</Typography>)
+      ) : (
+        <Typography>hello</Typography>
+      )}
+    </Box>
   );
 }
