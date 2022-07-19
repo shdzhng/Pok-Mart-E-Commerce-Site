@@ -1,22 +1,16 @@
 import React, { useState, useEffect, memo } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Slide,
   CssBaseline,
-  useScrollTrigger,
   Box,
   AppBar,
   Toolbar,
   Typography,
   MenuItem,
-  Tooltip,
   Menu,
   Container,
   IconButton,
-  Button,
   Icon,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 //firebase
 import { useAuth } from '../../contexts/AuthContext';
@@ -38,25 +32,6 @@ import ShoppingDropDownMenu from './ShoppingDropDownMenu';
 
 //etc
 import { categories } from '../../constants/categories';
-
-function HideOnScroll(props) {
-  const { children, window } = props;
-
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-  });
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  window: PropTypes.func,
-};
 
 function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -104,8 +79,7 @@ function HideAppBar(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <HideOnScroll {...props}>
-        <AppBar sx={{ minWidth: 'xs', bgcolor: '#275597' }}>
+        <AppBar sx={{ minWidth: 'xs', bgcolor: '#275597', height:'8vh' }}>
           <Container maxWidth="xl">
             <Toolbar
               sx={{
@@ -200,8 +174,6 @@ function HideAppBar(props) {
             </Toolbar>
           </Container>
         </AppBar>
-      </HideOnScroll>
-
       <LogInModal open={openLogIn} handleClose={handleClose} />
     </React.Fragment>
   );
