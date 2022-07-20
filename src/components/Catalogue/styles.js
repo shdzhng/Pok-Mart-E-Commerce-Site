@@ -10,7 +10,8 @@ const catalogueTheme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {},
+        root:{},
+        
       },
     },
     MuiPaper: {

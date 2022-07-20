@@ -20,14 +20,14 @@ import { selectAllResults } from '../items/itemSlice';
 
 function ShoppingDropDownMenu() {
   const dispatch = useDispatch();
-  const { results, status } = useSelector((state) => state.items);
+  const items = useSelector((state) => state.items);
 const state = useSelector((state) => state.items);
  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
  const openCategoryMenu = Boolean(categoryAnchorEl);
 
  useEffect(() => {
-   console.log(state);
- }, [results, status]);
+   console.log(items);
+ }, [items]);
 
  const handleCategoryMenu = (command, event) => {
    if (command === 'open') setCategoryAnchorEl(event.currentTarget);

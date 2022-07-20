@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Slide,
-  CssBaseline,
-  useScrollTrigger,
-  Box,
-  AppBar,
-  Toolbar,
   Typography,
   MenuItem,
   Tooltip,
   Menu,
-  Container,
   IconButton,
-  Button,
-  Icon,
 } from '@mui/material';
 
 import { ThemeProvider } from '@mui/material';
@@ -56,8 +47,7 @@ function AccountDropDownMenu({handleLoginModal}) {
         <>
           <Tooltip title="Open settings">
             <IconButton
-              size="large"
-              sx={{ p: '0.5em' }}
+              size="medium"
               onClick={(e) => {
                 handleOpenUserMenu(e);
               }}
@@ -69,12 +59,12 @@ function AccountDropDownMenu({handleLoginModal}) {
             anchorEl={anchorElUser}
             keepMounted
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: 'bottom',
+              horizontal: 'center',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
@@ -94,14 +84,14 @@ function AccountDropDownMenu({handleLoginModal}) {
                     handleCloseUserMenu(e);
                   }}
                 >
-                  <Typography>{setting.name}</Typography>
+               {setting.name}
                 </MenuItem>
               </NavbarMenuLink>
             ))}
           </Menu>
         </>
       ) : (
-        <IconButton onClick={handleLoginModal} size="large" sx={{ p: '0.2em' }}>
+        <IconButton onClick={handleLoginModal} size="large">
           <PersonOutlineIcon sx={{ fill: `${colors.white}` }} />
         </IconButton>
       )}
