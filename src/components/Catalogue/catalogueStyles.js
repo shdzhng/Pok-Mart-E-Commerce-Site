@@ -8,13 +8,17 @@ const breakpoints = createBreakpoints({});
 
 const catalogueTheme = createTheme({
   components: {
-    MuiButton: {
+    MuiCardContent: {
       styleOverrides: {
-        root:{},
-        
+        root: {},
       },
     },
-    MuiPaper: {
+    MuiCard: {
+      styleOverrides: {
+        root: {},
+      },
+    },
+    MuiTypography: {
       styleOverrides: {
         root: {},
       },
