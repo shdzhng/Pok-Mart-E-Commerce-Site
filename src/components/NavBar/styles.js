@@ -32,6 +32,9 @@ const searchTheme = createTheme({
           marginLeft: 0,
           width: '25%',
           backgroundColor: `${colors.red}`,
+          [breakpoints.down('sm')]: {
+            display: 'none',
+          },
         },
         input: {
           color: colors.white,
