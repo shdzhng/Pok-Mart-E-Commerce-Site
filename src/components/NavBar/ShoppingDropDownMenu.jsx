@@ -14,8 +14,8 @@ import { navbarTheme } from './styles';
 import { categories } from '../../constants/categories';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchItemsByCategory } from '../items/itemSlice';
-import { selectAllResults } from '../items/itemSlice';
+import { fetchItemsByCategory } from '../../contexts/categorySlice';
+import { selectAllResults } from '../../contexts/categorySlice';
 
 
 function ShoppingDropDownMenu() {

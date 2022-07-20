@@ -1,10 +1,10 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import itemSliceReducer from '../components/items/itemSlice';
-import usersReducer from '../components/items/userSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import usersReducer from '../contexts/userSlice';
+import categorySliceReducer from '../contexts/categorySlice';
 
 export const store = configureStore({
   reducer: {
-    items: itemSliceReducer,
+    categoryItems: categorySliceReducer,
     users: usersReducer,
   },
 });

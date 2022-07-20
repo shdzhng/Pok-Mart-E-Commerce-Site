@@ -19,14 +19,27 @@ const StyledContainer = styled(Box)({
 
 const catalogueTheme = createTheme({
   components: {
+    MuiAvatar: {
+      styleOverrides: {
+        root: {},
+      },
+    },
     MuiCardContent: {
       styleOverrides: {
-        root: {
-          // backgroundColor: 'green',
-        },
+        root: {},
       },
     },
     MuiCard: {
+      variants: [
+        {
+          props: {
+            variant: 'grayMode',
+          },
+          style: {
+            backgroundColor: colors.gray2,
+          },
+        },
+      ],
       styleOverrides: {
         root: {
           width: '20%',
@@ -45,7 +58,7 @@ const catalogueTheme = createTheme({
             width: '40%',
           },
           [breakpoints.down('sm')]: {
-            width: '80%',
+            width: '70%',
           },
         },
       },
