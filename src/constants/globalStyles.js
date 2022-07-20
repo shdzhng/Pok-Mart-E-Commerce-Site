@@ -16,6 +16,10 @@ const GlobalStyle = createGlobalStyle`
     margin:0
   }
 
+  .bold{
+    font-weight:900
+  }
+
   .App {
   text-align: center;
 }
