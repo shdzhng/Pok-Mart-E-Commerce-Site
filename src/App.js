@@ -8,6 +8,7 @@ import Home from './scenes/Home';
 import NavBar from './components/NavBar';
 import Dashboard from './scenes/Dashboard';
 import Catalogue from './scenes/Catalogue';
+import Item from './scenes/Item';
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
             <Dashboard />
           </Route>
           <Route path="/catalogue">
+            <Catalogue />
+          </Route>
+          <Route path="/item">
             <Catalogue />
           </Route>
         </Switch>

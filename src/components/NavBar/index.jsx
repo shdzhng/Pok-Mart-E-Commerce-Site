@@ -30,15 +30,12 @@ import LogInModal from './LogInModal';
 import AccountDropDownMenu from './AccountDropDownMenu';
 import ShoppingDropDownMenu from './ShoppingDropDownMenu';
 
-//etc
-import { categories } from '../../constants/categories';
-
 function HideAppBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const [openLogIn, setOpenLogIn] = useState(false);
 
-  const [searchItems, setSearchItems] = useState([]);
+
   const { currentUser, logout } = useAuth();
 
   ///
@@ -73,8 +70,6 @@ function HideAppBar(props) {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
-
 
   return (
     <React.Fragment>
@@ -158,10 +153,7 @@ function HideAppBar(props) {
 
               <ShoppingDropDownMenu />
 
-              <SearchBar
-                setSearchItems={setSearchItems}
-                searchItems={searchItems}
-              />
+              <SearchBar/>
               <AccountDropDownMenu handleLoginModal={handleLoginModal} />
 
               <IconButton

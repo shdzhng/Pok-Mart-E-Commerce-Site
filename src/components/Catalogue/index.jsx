@@ -6,18 +6,20 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import { catalogueTheme, StyledContainer } from './catalogueStyles';
 
 export default function CatalogueGrid() {
-  const items = useSelector(state=>state.items.items)
+  const items = useSelector((state) => state.categoryItems.items);
 
   return (
     <ThemeProvider theme={catalogueTheme}>
       <CssBaseline />
-      <StyledContainer>
-        {items?.length > 0 ? (
-          items.map((item) => <ItemCard item={item} key={item.name} />)
-        ) : (
-          <Typography>no items yet</Typography>
-        )}
-      </StyledContainer>
+      <Box>
+        <StyledContainer>
+          {items?.length > 0 ? (
+            items.map((item) => <ItemCard item={item} key={item.name} />)
+          ) : (
+            <Typography>no items yet</Typography>
+          )}
+        </StyledContainer>
+      </Box>
     </ThemeProvider>
   );
 }
