@@ -1,12 +1,8 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import {Card,Grid,Typography,CardContent,Box,Button,CardActions, Paper} from '@mui/material';
 import { formatWord } from '../../utils/formatWord';
 import { formatSentence } from '../../utils/formatSentence';
+
 
 function ItemCard({item}) {
   const itemName = formatWord(item?.name);
@@ -15,22 +11,44 @@ function ItemCard({item}) {
     (translation) => translation.language.name === 'en'
   ).text)
   const itemEffect = formatSentence(item?.effect_entries?.[0]?.effect);
-  const itemPrice = item.cost === 0 ? 'OUT OF STOCK' : `Price: $${item.cost / 10}`;
+  const itemPrice = item.cost === 0 ? 'OUT OF STOCK' : `$${item.cost / 10}`;
 
   const itemImage = item?.sprites?.default;
 
-  console.log(itemImage);
-
   return (
-    <Card sx={{ width: '200px' }}>
+    <Card sx={{  }}>
       <CardContent>
-        <img src={itemImage} />
-        <Typography>{`Name: ${itemName}`}</Typography>
-        <Typography>{`Category: ${itemCategory}`}</Typography>
-        <Typography sx={{ fontSize: 14 }}>{itemPrice}</Typography>
-        <Typography>{`Description: ${itemDescription}`}</Typography>
-
-        {itemEffect ? <Typography>{`Effect: ${itemEffect}`}</Typography> : null}
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+            <Typography variant="title">{`${itemName}`}</Typography>
+            <Typography>
+              <span className="bold">Category: </span>
+              {itemCategory}
+            </Typography>
+            <Typography>
+              <span className="bold">Price: </span>
+              {itemPrice}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Box component="img" sx={{ width: 30 }} src={itemImage}></Box>
+          </Grid>
+          <Grid item xs={12}></Grid>
+          <Grid item xs={12}>
+            <Typography>
+              <span className="bold">Description: </span>
+              {itemDescription}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {itemEffect ? (
+              <Typography>
+                <span className="bold">Effect: </span>
+                {itemEffect}
+              </Typography>
+            ) : null}
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );
