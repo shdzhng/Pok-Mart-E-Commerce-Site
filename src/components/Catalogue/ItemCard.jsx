@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   Grid,
@@ -109,21 +109,21 @@ function ItemCard({ item }) {
         <Box sx={{ alignSelf: 'flex-end' }}>
           <IconButton
             onClick={() => {
-              inCart ? addToShoppingCart(item) : removeFromShoppingCart(item);
+              inCart ? removeFromShoppingCart(item) : addToShoppingCart(item);
             }}
             aria-label="add to cart"
           >
             {inCart ? (
-              <AddShoppingCartIcon sx={{ color: colors.red }} />
-            ) : (
               <RemoveShoppingCartIcon sx={{ color: colors.red }} />
+            ) : (
+              <AddShoppingCartIcon sx={{ color: colors.red }} />
             )}
           </IconButton>
 
           <IconButton
             aria-label="add to shopping cart"
             onClick={() => {
-              inFavorites ? addFavorite(item) : removeFavorite(item);
+              inFavorites ? removeFavorite(item) : addFavorite(item);
             }}
           >
             {inFavorites ? (

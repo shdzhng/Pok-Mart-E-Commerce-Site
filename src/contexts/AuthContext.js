@@ -1,6 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase';
-import { doc, setDoc, getFirestore, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+} from 'firebase/firestore';
 import app from '../firebase';
 
 const AuthContext = React.createContext();
@@ -13,20 +22,15 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const userRef = currentUser ? doc(db, 'users', currentUser.uid) : null;
 
   useEffect(() => {
-    const userRef = currentUser ? doc(db, 'users', currentUser.uid) : null;
-
-    const getUserData = async () => {
-      if (userRef) {
-        const docSnap = await getDoc(userRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        }
-      }
-    };
-
-    getUserData();
+    if (userRef) {
+      const unsub = onSnapshot(userRef, (doc) => {
+        setUserData(doc.data());
+      });
+      return unsub;
+    }
   }, [currentUser]);
 
   function signup(email, password, firstName, lastName) {
@@ -45,18 +49,25 @@ export function AuthProvider({ children }) {
     });
   }
 
-  function addFavorite(item) {
-    console.log(`Favorite: ${item}`);
+  async function addFavorite(item) {
+    await updateDoc(userRef, {
+      favorites: arrayUnion(item.name),
+    });
   }
-  function removeFavorite(item) {
-    console.log(`Unfavorite: ${item}`);
+  async function removeFavorite(item) {
+    await updateDoc(userRef, {
+      favorites: arrayRemove(item.name),
+    });
   }
-  function addToShoppingCart(item) {
-    console.log(item);
-    console.log(`Add to Cart: ${item}`);
+  async function addToShoppingCart(item) {
+    await updateDoc(userRef, {
+      shoppingCart: arrayUnion(item.name),
+    });
   }
-  function removeFromShoppingCart(item) {
-    console.log(`Remove from Cart: ${item}`);
+  async function removeFromShoppingCart(item) {
+    await updateDoc(userRef, {
+      shoppingCart: arrayRemove(item.name),
+    });
   }
 
   function login(email, password) {
