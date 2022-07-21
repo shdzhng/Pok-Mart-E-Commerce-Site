@@ -67,9 +67,19 @@ function LogInModal({ open, handleClose }) {
       return;
     }
 
+    if(firstName === ''){
+        setError({ type: 'firstName', message: 'First name cannot be empty' });
+        return;
+    }
+
+    if (lastName === '') {
+       setError({ type: 'lastName', message: 'Last name cannot be empty' });
+       return;
+      }
+
     try {
       setLoading(true);
-      await signup(email, password);
+      await signup(email, password, firstName, lastName);
     } catch (error) {
       if (error.message.includes('already in use')) {
         setError({ type: 'email', message: 'Email already in use' });
@@ -160,6 +170,8 @@ function LogInModal({ open, handleClose }) {
                   sx={{ mt: 2 }}
                   required
                   value={userInfo.firstName}
+                  error={error.type === 'firstName' ? true : false}
+                  helperText={error.type === 'firstName' ? error.message : null}
                   onChange={({ target }) => {
                     setUserInfo((prevState) => ({
                       ...prevState,
@@ -177,6 +189,8 @@ function LogInModal({ open, handleClose }) {
                   required
                   sx={{ mt: 1 }}
                   value={userInfo.lastName}
+                  error={error.type === 'lastName' ? true : false}
+                  helperText={error.type === 'lastName' ? error.message : null}
                   onChange={({ target }) => {
                     setUserInfo((prevState) => ({
                       ...prevState,

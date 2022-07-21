@@ -27,7 +27,7 @@ function App() {
             <Catalogue />
           </Route>
           <Route path="/item">
-            <Catalogue />
+            <Item />
           </Route>
         </Switch>
       </Router>

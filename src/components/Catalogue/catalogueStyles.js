@@ -21,12 +21,17 @@ const catalogueTheme = createTheme({
   components: {
     MuiAvatar: {
       styleOverrides: {
-        root: {},
+        fallback: {
+          width: 2200,
+        },
       },
     },
     MuiCardContent: {
       styleOverrides: {
-        root: {},
+        root: {
+          display: 'flex',
+          flexDirection: 'column',
+        },
       },
     },
     MuiCard: {
@@ -94,6 +99,45 @@ const catalogueTheme = createTheme({
           },
           [breakpoints.down('sm')]: {
             fontSize: '0.8em',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: {
+            variant: 'contained',
+          },
+          style: {
+            position: 'relative',
+            marginTop: '1em',
+            fontSize: '1em',
+            backgroundColor: `${colors.red}90`,
+            '&:hover': {
+              backgroundColor: `${colors.red}`,
+            },
+            '&:active': {
+              backgroundColor: `${colors.red}`,
+            },
+            [breakpoints.down('md')]: {
+              fontSize: '0.7em',
+            },
+            [breakpoints.down('sm')]: {
+              fontSize: '0.5em',
+              padding: '0.7em',
+            },
+          },
+        },
+      ],
+      styleOverrides: {
+        endIcon: {
+          fontSize: 20,
+          [breakpoints.down('md')]: {
+            fontSize: '0.7em',
+          },
+          [breakpoints.down('sm')]: {
+            fontSize: '0.5em',
           },
         },
       },

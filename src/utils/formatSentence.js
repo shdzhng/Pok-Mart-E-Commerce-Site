@@ -1,6 +1,6 @@
 export const formatSentence = (sentence) => {
   if (sentence === undefined) {
-    console.log('the sentence you are trying to format is undefined');
+    // console.log('the sentence you are trying to format is undefined');
     return undefined;
   }
 
