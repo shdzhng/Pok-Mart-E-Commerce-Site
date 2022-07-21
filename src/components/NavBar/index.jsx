@@ -30,13 +30,14 @@ import LogInModal from './LogInModal';
 import AccountDropDownMenu from './AccountDropDownMenu';
 import ShoppingDropDownMenu from './ShoppingDropDownMenu';
 
-function HideAppBar(props) {
+
+function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const [openLogIn, setOpenLogIn] = useState(false);
 
 
-  const { currentUser, logout } = useAuth();
+  const { currentUser } = useAuth();
 
   ///
  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
@@ -74,100 +75,101 @@ function HideAppBar(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-        <AppBar sx={{ minWidth: 'xs', bgcolor: '#275597', height:'8vh' }}>
-          <Container maxWidth="xl">
-            <Toolbar
-              sx={{
-                display: 'flex',
-                justifyContent: { xs: 'space-between', sm: 'space-around' },
-              }}
-              disableGutters
-            >
-              <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
-                <IconButton
-                  size="large"
-                  onClick={handleOpenNavMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
 
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: 'block', md: 'none' },
-                  }}
-                >
-                  {pages.map((page) => (
-                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                      <Typography>{`${page.name}`}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-
-              <Box sx={{ display: 'flex' }}>
-                <NavbarLink to="/" style={{ textDecoration: 'none' }}>
-                  <Icon
-                    sx={{
-                      display: 'inline-block',
-                      mr: 1,
-                      overflow: 'visible',
-                    }}
-                  >
-                    <img
-                      width={30}
-                      src={logo}
-                      style={{ verticalAlign: 'middle' }}
-                    />
-                  </Icon>
-                </NavbarLink>
-                <NavbarLink to="/" style={{ textDecoration: 'none' }}>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    sx={{
-                      mr: 2,
-                      display: 'flex',
-                      fontWeight: 700,
-                      color: 'inherit',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    PokéMart
-                  </Typography>
-                </NavbarLink>
-              </Box>
-
-              <ShoppingDropDownMenu />
-
-              <SearchBar/>
-              <AccountDropDownMenu handleLoginModal={handleLoginModal} />
-
+      <AppBar elevation={0} sx={{ minWidth: 'xs', bgcolor: '#275597' }}>
+        <Container maxWidth="xl">
+          <Toolbar
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'space-between', sm: 'space-around' },
+            }}
+            disableGutters
+          >
+            <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
               <IconButton
-                onClick={handleShoppingCart}
                 size="large"
-                sx={{ p: '0.2em' }}
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                <ShoppingCartIcon sx={{ fill: `${colors.white}` }} />
+                <MenuIcon />
               </IconButton>
-            </Toolbar>
-          </Container>
-        </AppBar>
+
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                    <Typography>{`${page.name}`}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            <Box sx={{ display: 'flex' }}>
+              <NavbarLink to="/" style={{ textDecoration: 'none' }}>
+                <Icon
+                  sx={{
+                    display: 'inline-block',
+                    mr: 1,
+                    overflow: 'visible',
+                  }}
+                >
+                  <img
+                    width={30}
+                    src={logo}
+                    style={{ verticalAlign: 'middle' }}
+                  />
+                </Icon>
+              </NavbarLink>
+              <NavbarLink to="/" style={{ textDecoration: 'none' }}>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    mr: 2,
+                    display: 'flex',
+                    fontWeight: 700,
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  }}
+                >
+                  PokéMart
+                </Typography>
+              </NavbarLink>
+            </Box>
+
+            <ShoppingDropDownMenu />
+
+            <SearchBar />
+            <AccountDropDownMenu handleLoginModal={handleLoginModal} />
+
+            <IconButton
+              onClick={handleShoppingCart}
+              size="large"
+              sx={{ p: '0.2em' }}
+            >
+              <ShoppingCartIcon sx={{ fill: `${colors.white}` }} />
+            </IconButton>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <LogInModal open={openLogIn} handleClose={handleClose} />
     </React.Fragment>
   );
 }
-export default memo(HideAppBar);
+export default memo(NavBar);
