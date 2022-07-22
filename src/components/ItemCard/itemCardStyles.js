@@ -1,23 +1,10 @@
-import styled from 'styled-components';
 import { colors } from '../../constants/colors';
-import { TextField, Button, Box, Paper } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { createBreakpoints } from '@mui/system';
 
 const breakpoints = createBreakpoints({});
 
-const StyledContainer = styled(Box)({
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-  overflowY: 'scroll',
-  position: 'fixed',
-  top: 70,
-  alignItems: 'strech',
-  maxHeight: '90vh',
-});
-
-const catalogueTheme = createTheme({
+const itemCardTheme = createTheme({
   components: {
     MuiAvatar: {
       styleOverrides: {
@@ -142,13 +129,7 @@ const catalogueTheme = createTheme({
         },
       },
     },
-    MuiGrid: {
-      styleOverrides: {
-        container: {},
-        item: {},
-      },
-    },
   },
 });
 
-export { catalogueTheme, StyledContainer };
+export { itemCardTheme };
