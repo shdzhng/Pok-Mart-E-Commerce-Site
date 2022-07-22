@@ -8,7 +8,7 @@ import {
   Divider,
 } from '@mui/material';
 import { colors } from '../../constants/colors';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
 import { categories } from '../../constants/categories';
@@ -17,25 +17,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchItemsByCategory } from '../../contexts/categorySlice';
 import { selectAllResults } from '../../contexts/categorySlice';
 
-
 function ShoppingDropDownMenu() {
   const dispatch = useDispatch();
 
- const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
- const openCategoryMenu = Boolean(categoryAnchorEl);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+  const openCategoryMenu = Boolean(categoryAnchorEl);
 
- const handleCategoryMenu = (command, event) => {
-   if (command === 'open') setCategoryAnchorEl(event.currentTarget);
-   if (command === 'close') setCategoryAnchorEl(null);
-   if (command === 'select') {
-    setCategoryAnchorEl(null);
-    dispatch(fetchItemsByCategory(event.target.textContent));
-   }
-   }
-
- const handleWhatsNew = () =>{
-  console.log('whats new?')
- }
+  const handleCategoryMenu = (command, event) => {
+    if (command === 'open') setCategoryAnchorEl(event.currentTarget);
+    if (command === 'close') setCategoryAnchorEl(null);
+    if (command === 'select') {
+      setCategoryAnchorEl(null);
+      dispatch(fetchItemsByCategory(event.target.textContent));
+    }
+  };
 
   return (
     <ThemeProvider theme={navbarTheme}>
@@ -49,6 +44,7 @@ function ShoppingDropDownMenu() {
         </Button>
 
         <Menu
+          elevation={0}
           getcontentanchorel={null}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -73,7 +69,11 @@ function ShoppingDropDownMenu() {
               .join(' ');
 
             return (
-              <Link key={category} to="/catalogue" style={{textDecoration:'none', color:`${colors.blue3}`}}>
+              <Link
+                key={category}
+                to="/catalogue"
+                style={{ textDecoration: 'none', color: `${colors.blue3}` }}
+              >
                 <MenuItem
                   onClick={(e) => {
                     handleCategoryMenu('select', e);
@@ -85,10 +85,11 @@ function ShoppingDropDownMenu() {
               </Link>
             );
           })}
-
         </Menu>
 
-        <Button onClick={handleWhatsNew}>What's New</Button>
+        <Link to="/new" style={{ textDecoration: 'none' }}>
+          <Button>What's New</Button>
+        </Link>
       </Box>
     </ThemeProvider>
   );
