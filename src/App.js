@@ -9,6 +9,12 @@ import NavBar from './components/NavBar';
 import Dashboard from './scenes/Dashboard';
 import Catalogue from './scenes/Catalogue';
 import Item from './scenes/Item';
+import ShoppingCart from './scenes/ShoppingCart';
+import Orders from './scenes/Orders';
+import Account from './scenes/Account';
+import New from './scenes/New';
+
+import BackgroundAnimation from './components/BackgroundAnimation';
 
 function App() {
   return (
@@ -29,7 +35,20 @@ function App() {
           <Route path="/item">
             <Item />
           </Route>
+          <Route path="/shoppingCart">
+            <ShoppingCart />
+          </Route>
+          <Route path="/orders">
+            <Orders />
+          </Route>
+          <Route path="/account">
+            <Account />
+          </Route>
+          <Route path="/new">
+            <New />
+          </Route>
         </Switch>
+        <BackgroundAnimation />
       </Router>
     </AuthProvider>
   );

@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  MenuItem,
-  Tooltip,
-  Menu,
-  IconButton,
-} from '@mui/material';
+import { Typography, MenuItem, Tooltip, Menu, IconButton } from '@mui/material';
 
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
@@ -15,7 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../constants/colors';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-function AccountDropDownMenu({handleLoginModal}) {
+function AccountDropDownMenu({ handleLoginModal }) {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser, logout } = useAuth();
 
@@ -28,10 +22,8 @@ function AccountDropDownMenu({handleLoginModal}) {
   };
 
   const settings = [
-    { name: 'Home', action: null, href: '/' },
-    { name: 'Orders', action: null, href: '/dashboard' },
-    { name: 'Account', action: null, href: '/dashboard' },
-    { name: 'Dashboard', action: null, href: '/dashboard' },
+    { name: 'Orders', action: null, href: '/orders' },
+    { name: 'Account', action: null, href: '/account' },
     {
       name: 'Logout',
       action: () => {
@@ -56,6 +48,7 @@ function AccountDropDownMenu({handleLoginModal}) {
             </IconButton>
           </Tooltip>
           <Menu
+            elevation={0}
             anchorEl={anchorElUser}
             keepMounted
             anchorOrigin={{
@@ -84,7 +77,7 @@ function AccountDropDownMenu({handleLoginModal}) {
                     handleCloseUserMenu(e);
                   }}
                 >
-               {setting.name}
+                  {setting.name}
                 </MenuItem>
               </NavbarMenuLink>
             ))}

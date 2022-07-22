@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   Grid,
@@ -39,7 +39,6 @@ function ItemCard({ item }) {
   const indexOfName = item.names.findIndex(
     (translation) => translation.language.name === 'en'
   );
-
   const itemName = item.names[indexOfName].name;
   const itemCategory = formatWord(item?.category?.name);
   const itemDescription = formatSentence(
@@ -50,17 +49,7 @@ function ItemCard({ item }) {
   const itemEffect = formatSentence(item?.effect_entries?.[0]?.effect);
   const itemPrice = item.cost === 0 ? 'OUT OF STOCK' : `$${item.cost / 10}`;
   const grayMode = itemPrice.includes('$') ? false : true;
-
-  const itemImage = () => {
-    const defaultImage = item?.sprites?.default;
-    const backupImage = `../../constants/items/${item.category.name}/${item.name}`;
-
-    if (defaultImage !== null) {
-      return defaultImage;
-    } else {
-      return backupImage;
-    }
-  };
+  const itemImage = item?.sprites?.default;
 
   return (
     <Card variant={grayMode ? 'grayMode' : null}>
@@ -70,7 +59,6 @@ function ItemCard({ item }) {
             <Typography variant="title">{`${itemName}`}</Typography>
             {moveName ? (
               <Typography>
-                {' '}
                 <span className="bold">Ability:</span> {moveName}
               </Typography>
             ) : null}
@@ -83,12 +71,16 @@ function ItemCard({ item }) {
               {itemPrice}
             </Typography>
           </Grid>
+
           <Grid item xs={4}>
-            <Avatar
-              sx={{ width: { xs: 50 }, height: { xs: 50 } }}
-              src={itemImage()}
-            />
+            {itemImage ? (
+              <Avatar
+                sx={{ width: { xs: 50 }, height: { xs: 50 } }}
+                src={itemImage}
+              />
+            ) : null}
           </Grid>
+
           <Grid item xs={12}></Grid>
           <Grid item xs={12}>
             <Typography>
@@ -109,21 +101,21 @@ function ItemCard({ item }) {
         <Box sx={{ alignSelf: 'flex-end' }}>
           <IconButton
             onClick={() => {
-              inCart ? addToShoppingCart(item) : removeFromShoppingCart(item);
+              inCart ? removeFromShoppingCart(item) : addToShoppingCart(item);
             }}
             aria-label="add to cart"
           >
             {inCart ? (
-              <AddShoppingCartIcon sx={{ color: colors.red }} />
-            ) : (
               <RemoveShoppingCartIcon sx={{ color: colors.red }} />
+            ) : (
+              <AddShoppingCartIcon sx={{ color: colors.red }} />
             )}
           </IconButton>
 
           <IconButton
             aria-label="add to shopping cart"
             onClick={() => {
-              inFavorites ? addFavorite(item) : removeFavorite(item);
+              inFavorites ? removeFavorite(item) : addFavorite(item);
             }}
           >
             {inFavorites ? (

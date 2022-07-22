@@ -11,6 +11,7 @@ import {
   IconButton,
   Icon,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 //firebase
 import { useAuth } from '../../contexts/AuthContext';
@@ -30,30 +31,24 @@ import LogInModal from './LogInModal';
 import AccountDropDownMenu from './AccountDropDownMenu';
 import ShoppingDropDownMenu from './ShoppingDropDownMenu';
 
-
 function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
   const [openLogIn, setOpenLogIn] = useState(false);
 
-
   const { currentUser } = useAuth();
 
   ///
- const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
- const openCategoryMenu = Boolean(categoryAnchorEl);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+  const openCategoryMenu = Boolean(categoryAnchorEl);
 
- const handleOpenCategoryMenu = (event, command) => {
-   setCategoryAnchorEl(event.currentTarget);
- };
+  const handleOpenCategoryMenu = (event, command) => {
+    setCategoryAnchorEl(event.currentTarget);
+  };
 
- const handleCloseCategoryMenu = (event, command) => {
-   setCategoryAnchorEl(null)
- };
-
- const handleShoppingCart  = () =>{
-  console.log('shopping cart clicked')
- }
+  const handleCloseCategoryMenu = (event, command) => {
+    setCategoryAnchorEl(null);
+  };
 
   const handleClose = () => setOpenLogIn(false);
 
@@ -61,12 +56,19 @@ function NavBar(props) {
     setOpenLogIn(true);
   };
 
-  const pages = [{ name: 'Categories', action: (e)=>{handleOpenCategoryMenu(e)} }, { name: "What's New",action:null }];
+  const pages = [
+    {
+      name: 'Categories',
+      action: (e) => {
+        handleOpenCategoryMenu(e);
+      },
+    },
+    { name: "What's New", action: null },
+  ];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -156,15 +158,14 @@ function NavBar(props) {
             <ShoppingDropDownMenu />
 
             <SearchBar />
+
             <AccountDropDownMenu handleLoginModal={handleLoginModal} />
 
-            <IconButton
-              onClick={handleShoppingCart}
-              size="large"
-              sx={{ p: '0.2em' }}
-            >
-              <ShoppingCartIcon sx={{ fill: `${colors.white}` }} />
-            </IconButton>
+            <Link to="/shoppingCart">
+              <IconButton size="large" sx={{ p: '0.2em' }}>
+                <ShoppingCartIcon sx={{ fill: `${colors.white}` }} />
+              </IconButton>
+            </Link>
           </Toolbar>
         </Container>
       </AppBar>

@@ -16,6 +16,12 @@ const GlobalStyle = createGlobalStyle`
     margin:0
   }
 
+
+  .animation{
+position: absolute;
+top: 50%50%;
+  }
+
   .bold{
     font-weight:900
   }
