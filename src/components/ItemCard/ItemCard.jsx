@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   Grid,
   Typography,
   CardContent,
   Box,
-  Button,
-  CardActions,
-  Paper,
   IconButton,
   Avatar,
 } from '@mui/material';
@@ -19,10 +16,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useAuth } from '../../contexts/AuthContext';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { itemCardTheme } from './itemCardStyles';
 
-function ItemCard({ item }) {
+function ItemCard({ item, status }) {
   const {
     userData,
     addFavorite,
@@ -31,17 +28,22 @@ function ItemCard({ item }) {
     removeFromShoppingCart,
   } = useAuth();
 
+  const [useImage, setUseImage] = useState(false);
+
+  if (status === 'loading') return;
+
   const { favorites, shoppingCart } = userData;
 
-  const inFavorites = favorites ? favorites.includes(item.name) : false;
-  const inCart = shoppingCart ? shoppingCart.includes(item.name) : false;
+  const inFavorites = favorites ? favorites.includes(item?.name) : false;
+  const inCart = shoppingCart ? shoppingCart.includes(item?.name) : false;
 
   const regex = /(?<=Teaches )(.*)(?=to )/;
+
   const moveName = item?.effect_entries?.[0]?.effect.match(regex)?.[0];
-  const indexOfName = item.names.findIndex(
+  const indexOfName = item?.names.findIndex(
     (translation) => translation.language.name === 'en'
   );
-  const itemName = item.names[indexOfName].name;
+  const itemName = item?.names[indexOfName].name;
   const itemCategory = formatWord(item?.category?.name);
   const itemDescription = formatSentence(
     item?.flavor_text_entries.find(
@@ -50,9 +52,29 @@ function ItemCard({ item }) {
   );
   const itemEffect =
     formatSentence(item?.effect_entries?.[0]?.effect)?.split('.')[0] + '.';
-  const itemPrice = item.cost === 0 ? 'OUT OF STOCK' : `$${item.cost / 10}`;
+  const itemPrice = item?.cost === 0 ? 'OUT OF STOCK' : `$${item?.cost / 10}`;
   const grayMode = itemPrice.includes('$') ? false : true;
   const itemImage = item?.sprites?.default;
+
+  fetch(itemImage).then((res) => {
+    if (res.ok) setUseImage(true);
+  });
+
+  const handleCart = (item, param) => {
+    if (param) {
+      removeFromShoppingCart(item);
+      return;
+    }
+    addToShoppingCart(item);
+  };
+
+  const handleFavorite = (item, param) => {
+    if (param) {
+      removeFavorite(item);
+      return;
+    }
+    addFavorite(item);
+  };
 
   return (
     <ThemeProvider theme={itemCardTheme}>
@@ -77,7 +99,7 @@ function ItemCard({ item }) {
             </Grid>
 
             <Grid item xs={4}>
-              {itemImage ? (
+              {useImage ? (
                 <Avatar
                   sx={{ width: { xs: 50 }, height: { xs: 50 } }}
                   src={itemImage}
@@ -105,7 +127,7 @@ function ItemCard({ item }) {
           <Box sx={{ alignSelf: 'flex-end' }}>
             <IconButton
               onClick={() => {
-                inCart ? removeFromShoppingCart(item) : addToShoppingCart(item);
+                handleCart(item, inCart);
               }}
               aria-label="add to cart"
             >
@@ -119,7 +141,7 @@ function ItemCard({ item }) {
             <IconButton
               aria-label="add to shopping cart"
               onClick={() => {
-                inFavorites ? removeFavorite(item) : addFavorite(item);
+                handleFavorite(item, inFavorites);
               }}
             >
               {inFavorites ? (

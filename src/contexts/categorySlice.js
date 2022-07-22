@@ -27,22 +27,44 @@ export const fetchItemsByCategory = createAsyncThunk(
   }
 );
 
+export const fetchItemByURL = createAsyncThunk(
+  'items/fetchItemByURL',
+  async (url) => {
+    const returnedItemData = await fetch(url, { method: 'get' }).then((res) =>
+      res.json()
+    );
+    return returnedItemData;
+  }
+);
+
 export const itemSlice = createSlice({
   name: 'items',
   initialState: {
     items: [],
-    status: null,
+    itemsStatus: null,
+    item: null,
+    itemStatus: null,
   },
   extraReducers: {
     [fetchItemsByCategory.pending]: (state, action) => {
-      state.status = 'loading';
+      state.itemsStatus = 'loading';
     },
     [fetchItemsByCategory.fulfilled]: (state, action) => {
-      state.status = 'success';
+      state.itemsStatus = 'success';
       state.items = action.payload;
     },
     [fetchItemsByCategory.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.itemsStatus = 'failed';
+    },
+    [fetchItemByURL.pending]: (state, action) => {
+      state.itemStatus = 'loading';
+    },
+    [fetchItemByURL.fulfilled]: (state, action) => {
+      state.itemStatus = 'success';
+      state.item = action.payload;
+    },
+    [fetchItemByURL.rejected]: (state, action) => {
+      state.itemStatus = 'failed';
     },
   },
 });
