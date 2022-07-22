@@ -1,50 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Autocomplete, TextField, Box, Modal, Typography } from '@mui/material';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Autocomplete, TextField, Modal } from '@mui/material';
 import { ThemeProvider } from '@mui/material';
 import { searchTheme } from './styles';
-import { formatWord } from '../../utils/formatWord';
 import itemInventory from '../../constants/itemInventory';
-import { Link } from 'react-router-dom';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { fetchItemByURL } from '../../contexts/categorySlice';
+import ItemCard from '../ItemCard/ItemCard';
 
 function SearchBar() {
-  const [searchedItem, setSearchedItem] = useState();
   const [open, setOpen] = React.useState(false);
-  const openModal = Boolean(open && searchedItem);
+  const dispatch = useDispatch();
+  const { item, itemStatus } = useSelector((state) => state.categoryItems);
 
   const handleClose = () => {
-    setSearchedItem(null);
     setOpen(false);
   };
 
   const handleSearchChange = (value) => {
-    setOpen(true);
-    setSearchedItem(value);
+    if (value.url) {
+      dispatch(fetchItemByURL(value.url));
+      setOpen(true);
+    }
   };
 
   return (
     <ThemeProvider theme={searchTheme}>
-      <Modal open={openModal} onClose={handleClose}>
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
+      <Modal
+        open={open}
+        onClose={() => {
+          handleClose();
+        }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        <>
+          <ItemCard item={item} status={itemStatus} />
+        </>
       </Modal>
+
       <Autocomplete
         size="small"
         clearText="true"
