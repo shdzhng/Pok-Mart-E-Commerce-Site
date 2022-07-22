@@ -7,36 +7,30 @@ import {
   MenuItem,
   Divider,
 } from '@mui/material';
+import { colors } from '../../constants/colors';
+import { Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
 import { categories } from '../../constants/categories';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
-import { lookup } from '../search/searchSlice';
+import { fetchItemsByCategory } from '../../contexts/categorySlice';
+import { selectAllResults } from '../../contexts/categorySlice';
 
 function ShoppingDropDownMenu() {
   const dispatch = useDispatch();
-  const { search } = useSelector((state) => state.search);
 
- const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
- const openCategoryMenu = Boolean(categoryAnchorEl);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+  const openCategoryMenu = Boolean(categoryAnchorEl);
 
- useEffect(() => {
-   console.log(search);
- }, [search]);
-
- const handleCategoryMenu = (command, event) => {
-   if (command === 'open') setCategoryAnchorEl(event.currentTarget);
-   if (command === 'close') setCategoryAnchorEl(null);
-   if (command === 'select') {
-    setCategoryAnchorEl(null);
-      dispatch(lookup(event.target.textContent));
-   }
-   }
-
- const handleWhatsNew = () =>{
-  console.log('whats new?')
- }
+  const handleCategoryMenu = (command, event) => {
+    if (command === 'open') setCategoryAnchorEl(event.currentTarget);
+    if (command === 'close') setCategoryAnchorEl(null);
+    if (command === 'select') {
+      setCategoryAnchorEl(null);
+      dispatch(fetchItemsByCategory(event.target.textContent));
+    }
+  };
 
   return (
     <ThemeProvider theme={navbarTheme}>
@@ -50,6 +44,7 @@ function ShoppingDropDownMenu() {
         </Button>
 
         <Menu
+          elevation={0}
           getcontentanchorel={null}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -74,21 +69,27 @@ function ShoppingDropDownMenu() {
               .join(' ');
 
             return (
-              <MenuItem
+              <Link
                 key={category}
-                onClick={(e) => {
-                  handleCategoryMenu('select', e);
-                }}
+                to="/catalogue"
+                style={{ textDecoration: 'none', color: `${colors.blue3}` }}
               >
-                {formatName}
-                <KeyboardArrowRightIcon sx={{ fontSize: '1.1em' }} />
-              </MenuItem>
+                <MenuItem
+                  onClick={(e) => {
+                    handleCategoryMenu('select', e);
+                  }}
+                >
+                  {formatName}
+                  <KeyboardArrowRightIcon sx={{ fontSize: '1.1em' }} />
+                </MenuItem>
+              </Link>
             );
           })}
-
         </Menu>
 
-        <Button onClick={handleWhatsNew}>What's New</Button>
+        <Link to="/new" style={{ textDecoration: 'none' }}>
+          <Button>What's New</Button>
+        </Link>
       </Box>
     </ThemeProvider>
   );

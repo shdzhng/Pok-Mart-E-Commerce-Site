@@ -1,20 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Slide,
-  CssBaseline,
-  useScrollTrigger,
-  Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  MenuItem,
-  Tooltip,
-  Menu,
-  Container,
-  IconButton,
-  Button,
-  Icon,
-} from '@mui/material';
+import { Typography, MenuItem, Tooltip, Menu, IconButton } from '@mui/material';
 
 import { ThemeProvider } from '@mui/material';
 import { navbarTheme } from './styles';
@@ -24,8 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../constants/colors';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-
-function AccountDropDownMenu({handleLoginModal}) {
+function AccountDropDownMenu({ handleLoginModal }) {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { currentUser, logout } = useAuth();
 
@@ -38,10 +22,8 @@ function AccountDropDownMenu({handleLoginModal}) {
   };
 
   const settings = [
-    { name: 'Home', action: null, href: '/' },
-    { name: 'Orders', action: null, href: '/dashboard' },
-    { name: 'Account', action: null, href: '/dashboard' },
-    { name: 'Dashboard', action: null, href: '/dashboard' },
+    { name: 'Orders', action: null, href: '/orders' },
+    { name: 'Account', action: null, href: '/account' },
     {
       name: 'Logout',
       action: () => {
@@ -57,8 +39,7 @@ function AccountDropDownMenu({handleLoginModal}) {
         <>
           <Tooltip title="Open settings">
             <IconButton
-              size="large"
-              sx={{ p: '0.5em' }}
+              size="medium"
               onClick={(e) => {
                 handleOpenUserMenu(e);
               }}
@@ -67,15 +48,16 @@ function AccountDropDownMenu({handleLoginModal}) {
             </IconButton>
           </Tooltip>
           <Menu
+            elevation={0}
             anchorEl={anchorElUser}
             keepMounted
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: 'bottom',
+              horizontal: 'center',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
@@ -95,14 +77,14 @@ function AccountDropDownMenu({handleLoginModal}) {
                     handleCloseUserMenu(e);
                   }}
                 >
-                  <Typography>{setting.name}</Typography>
+                  {setting.name}
                 </MenuItem>
               </NavbarMenuLink>
             ))}
           </Menu>
         </>
       ) : (
-        <IconButton onClick={handleLoginModal} size="large" sx={{ p: '0.2em' }}>
+        <IconButton onClick={handleLoginModal} size="large">
           <PersonOutlineIcon sx={{ fill: `${colors.white}` }} />
         </IconButton>
       )}

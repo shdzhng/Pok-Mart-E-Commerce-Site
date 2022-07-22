@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors } from './colors';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -10,12 +9,21 @@ const GlobalStyle = createGlobalStyle`
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background:url('./constants/background.svg');
   }
-
-
 
   p{
     margin:0
+  }
+
+
+  .animation{
+position: absolute;
+top: 50%50%;
+  }
+
+  .bold{
+    font-weight:900
   }
 
   .App {

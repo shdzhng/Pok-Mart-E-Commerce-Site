@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import searchReducer from '../components/search/searchSlice';
+import usersReducer from '../contexts/userSlice';
+import categorySliceReducer from '../contexts/categorySlice';
 
 export const store = configureStore({
   reducer: {
-    search: searchReducer,
+    categoryItems: categorySliceReducer,
+    users: usersReducer,
   },
 });

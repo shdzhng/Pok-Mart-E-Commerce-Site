@@ -4,6 +4,7 @@ import { colors } from '../../constants/colors';
 import { TextField, Button } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { createBreakpoints } from '@mui/system';
+
 const breakpoints = createBreakpoints({});
 
 const NavbarLink = styled(Link)`
@@ -31,6 +32,9 @@ const searchTheme = createTheme({
           marginLeft: 0,
           width: '25%',
           backgroundColor: `${colors.red}`,
+          [breakpoints.down('sm')]: {
+            display: 'none',
+          },
         },
         input: {
           color: colors.white,
